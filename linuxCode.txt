@@ -1,0 +1,48 @@
+# Install PIP
+sudo apt update
+sudo apt install python3-pip
+
+# Install REST Service
+pip3 install Flask
+
+# Create a new working directory
+cd ~
+mkdir app
+cd app
+
+# Create Rest service
+sudo nano myapp.py
+
+# Update myapp.py with the python code
+
+# Update file permissions
+sudo chmod 777 myapp.py
+	
+# Install docker and nginx
+sudo apt update
+sudo apt install docker.io
+sudo docker pull nginx
+
+# Create a requirements.txt
+sudo nano requirements.txt
+
+# Add the following to the requirements.txt file
+Flask
+
+# Create a dockerfile
+sudo nano Dockerfile
+
+# Add the following to the Dockerfile
+FROM python:3.7-alpine
+WORKDIR /myapp
+COPY . /myapp
+RUN pip install -r requirements.txt
+EXPOSE 80
+CMD ["python", "myapp.py"]
+
+# Build the doker image
+sudo docker build -t investment_app:v1 .
+	
+# Run the docker image
+sudo docker run -p 80:80 investment_app:v1
+
