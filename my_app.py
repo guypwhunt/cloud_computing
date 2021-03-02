@@ -1,3 +1,4 @@
+# Import the necessary libraries
 from flask import Flask, jsonify, request
 import requests
 import pyodbc 
@@ -7,6 +8,7 @@ import collections
 
 app = Flask(__name__)
 
+# Define the connection parameters for the SQL database
 conn = pyodbc.connect('Driver={SQL Server};'
                       'Server=localhost\MSSQLSERVER01;'
                       'Database=index;'
@@ -14,6 +16,7 @@ conn = pyodbc.connect('Driver={SQL Server};'
 
 @app.route('/')
 def api_information():
+    # This function returns a HTML page with information on all the other APIs
     return """<html>
 <body>
 <h1>APIs</h1>
@@ -51,16 +54,25 @@ def api_information():
 # Get Request
 @app.route('/indexes/', methods=['GET'])
 def get_indexes():
+    # This function gets all the indexes in the database
     try:
+        # Open a connection to the database
         cursor = conn.cursor()
+
+        # Perform the select statement and extract the rows
         cursor.execute('SELECT * FROM dbo.index_data')
         rows = cursor.fetchall()
+
+        # For each row append the relevant data to an array
         rowarray_list = []
         for row in rows:
             t = (row[0], row[1], row[2])
             rowarray_list.append(t)
+
+        # Convert the array into JSON
         j = json.dumps(rowarray_list)
-        # Convert query to objects of key-value pairs
+
+        # Convert JSON to key-value pairs
         objects_list = []
         for row in rows:
             d = collections.OrderedDict()
@@ -68,8 +80,9 @@ def get_indexes():
             d["index_name"] = row[1]
             d["index_symbol"] = row[2]
             objects_list.append(d)
-        j = json.dumps(objects_list)
-        response = j
+        
+        # Convert key-value pairs to JSON
+        response = json.dumps(objects_list)
         return(response),200
     except:
         return jsonify({'error':'there was an error getting the indexes'}), 400
@@ -77,37 +90,48 @@ def get_indexes():
 # External API Request
 @app.route('/get_company_stock_data/<symbol>/<function>', methods=['GET'])
 def get_companies_time_series(symbol, function):
+    # This function gets the indexes stock price time series data
     try:
-        # Define the non-variable parameters
+        # Define the non-variable API parameters 
         ploads = {'datatype': 'json', 'apikey': '5VKW15ETPEN1FRNO'}
+        url = 'https://www.alphavantage.co/query?'
+
         # Update the variable parameters
         ploads['function'] = function
         ploads['symbol'] = symbol
-        url = 'https://www.alphavantage.co/query?'
+        
         # Make the get equest
         response = requests.get(url, params=ploads)
-        # Extract the JSON response and convert it into a dictionary
-        #response_dict = literal_eval(response.text)
-        return jsonify(response.text),200
+
+        return(response.text),200
     except:
-        return jsonify({'error':'there was an error getting the {symbol} stock data'}), 400
+        return jsonify({f'error':'there was an error getting the {symbol} stock data'}), 400
 
 # Post Request
 @app.route('/add_index', methods=['POST'])
 def create_an_index():
+    # This function allows users to add an index to the database
     try:
+        # Identify if the body contains all the necessary data
         if not request.json or not 'pk_index_id' in request.json:
             return jsonify({'error':'the new index needs to have a pk_index_id'}), 400
         if not request.json or not 'index_name' in request.json:
             return jsonify({'error':'the new index needs to have a index_name'}), 400
         if not request.json or not 'index_symbol' in request.json:
             return jsonify({'error':'the new index needs to have a index_symbol'}), 400
+
+        # Open a connection to the database
         cursor = conn.cursor()
+
+        # Define input variables
         pk_index_id = request.json['pk_index_id']
         index_name = request.json['index_name']
         index_symbol = request.json['index_symbol']
+
+        # Create the appropriate SQL script
         script = f"INSERT INTO [dbo].[index_data] ([pk_index_id], [index_name], [index_symbol]) VALUES ({pk_index_id}, '{index_name}', '{index_symbol}')"
-        #return jsonify(script)
+
+        # Execute the SQL statement
         cursor.execute(script)
         return jsonify({'message':'new index created: {}'.format([index_name])}), 201
     except:
@@ -117,9 +141,15 @@ def create_an_index():
 # Delete Request
 @app.route('/delete_index/<index_symbol>', methods=['DELETE'])
 def delete_index(index_symbol):
+    # This function allows user to delete an index
     try:
+        # Open a connection to the database
         cursor = conn.cursor()
+
+        # Create the appropriate SQL script
         script = f"DELETE FROM [dbo].[index_data] WHERE [index_symbol] = '{index_symbol}'"
+
+        # Execute the SQL statement
         cursor.execute(script)
         return jsonify({'success': True}), 200
     except:
@@ -128,15 +158,25 @@ def delete_index(index_symbol):
 # Push Request
 @app.route('/update_index/<index_symbol>', methods=['PUT'])
 def update_index(index_symbol):
+    # This function allows users to update an index
     try:
+        # Open a connection to the database
         cursor = conn.cursor()
+
+        # Identify if the body contains all the necessary data
         if not request.json or not 'pk_index_id' in request.json:
             return jsonify({'error':'the updated index needs to have a pk_index_id'}), 400
         if not request.json or not 'index_name' in request.json:
             return jsonify({'error':'the updated index needs to have a index_name'}), 400
+        
+        # Define input variables
         pk_index_id = request.json['pk_index_id']
         index_name = request.json['index_name']
+
+        # Create the appropriate SQL script
         script = f"UPDATE [dbo].[index_data] SET pk_index_id = '{pk_index_id}', index_name = '{index_name}' WHERE [index_symbol] = '{index_symbol}'"
+        
+        # Execute the SQL statement
         cursor.execute(script)
         return jsonify({'success': True}), 200
     except:
