@@ -26,19 +26,19 @@ def api_information():
 <br></br>
 <b>Get stock price data</b>
 <p>Request type: GET</p>
-<p>Path: /get_company_stock_data/"symbol"/"function"</p>
-<p>Example Path: /get_company_stock_data/MCX/TIME_SERIES_MONTHLY</p>
+<p>Path: /indexes/stock_data/"symbol"/"function"</p>
+<p>Example Path: /indexes/stock_data/MCX/TIME_SERIES_MONTHLY</p>
 <br></br>
 <b>Add new index</b>
 <p>Request type: POST</p>
-<p>Path: /add_index</p>
+<p>Path: /indexes/add_index</p>
 <p>Example Body: {"pk_index_id": 10,
     "index_name": "TEST INDEX",
     "index_symbol": "TEST"}</p>
 <br></br>
 <b>Update index</b>
 <p>Request type: PUT</p>
-<p>Path: /update_index/"index_symbol"</p>
+<p>Path: /indexes/update_index/"index_symbol"</p>
 <p>Example Body: {
     "pk_index_id": "10",
     "index_name": "TEST INDEX 2"
@@ -46,7 +46,7 @@ def api_information():
 <br></br>
 <b>Delete index</b>
 <p>Request type: PUT</p>
-<p>Path: /delete_index/"index_symbol"</p>
+<p>Path: /indexes/delete_index/"index_symbol"</p>
 <br></br>
 </body>
 </html>"""
@@ -88,7 +88,7 @@ def get_indexes():
         return jsonify({'error':'there was an error getting the indexes'}), 400
 
 # External API Request
-@app.route('/get_company_stock_data/<symbol>/<function>', methods=['GET'])
+@app.route('/indexes/stock_data/<symbol>/<function>', methods=['GET'])
 def get_companies_time_series(symbol, function):
     # This function gets the indexes stock price time series data
     try:
@@ -108,7 +108,7 @@ def get_companies_time_series(symbol, function):
         return jsonify({f'error':'there was an error getting the {symbol} stock data'}), 400
 
 # Post Request
-@app.route('/add_index', methods=['POST'])
+@app.route('/indexes/add_index', methods=['POST'])
 def create_an_index():
     # This function allows users to add an index to the database
     try:
@@ -139,7 +139,7 @@ def create_an_index():
 
 
 # Delete Request
-@app.route('/delete_index/<index_symbol>', methods=['DELETE'])
+@app.route('/indexes/delete_index/<index_symbol>', methods=['DELETE'])
 def delete_index(index_symbol):
     # This function allows user to delete an index
     try:
@@ -156,7 +156,7 @@ def delete_index(index_symbol):
         return jsonify({'success': False}), 400
 
 # Push Request
-@app.route('/update_index/<index_symbol>', methods=['PUT'])
+@app.route('/indexes/update_index/<index_symbol>', methods=['PUT'])
 def update_index(index_symbol):
     # This function allows users to update an index
     try:
