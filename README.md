@@ -2,13 +2,12 @@
 
 The stock index restful api is used to obtain, store, update and delete information on stock market indexes.
 
-## Installation
+## File
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
-```bash
-pip install foobar
-```
+Within the repository you will find three other files:
+    my_app.py which contains the python code used to create the restful API
+    linux_code.txt which contains the command steps required to run the my_app.py as a docker image on a linux virtual machine
+    sql_code_to_create_and_update_table.sql which contains the SQL commands to create the table and insert three records
 
 ## Usage
 
