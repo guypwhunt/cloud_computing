@@ -24,6 +24,11 @@ def api_information():
 <p>Request type: GET</p>
 <p>Path: /indexes/</p>
 <br></br>
+<b>Get a specific index</b>
+<p>Request type: GET</p>
+<p>Path: /indexes/"symbol"</p>
+<p>Example Path: /indexes/MCX</p>
+<br></br>
 <b>Get stock price data</b>
 <p>Request type: GET</p>
 <p>Path: /indexes/stock_data/"symbol"/"function"</p>
@@ -87,6 +92,43 @@ def get_indexes():
     except:
         return jsonify({'error':'there was an error getting the indexes'}), 400
 
+# Get Request
+@app.route('/indexes/<symbol>', methods=['GET'])
+def get_index(symbol):
+    # This function gets a specific index from the database
+    try:
+        # Open a connection to the database
+        cursor = conn.cursor()
+
+        # Perform the select statement and extract the rows
+        sql_script = f"SELECT * FROM dbo.index_data WHERE index_symbol = '{symbol}'"
+        cursor.execute(sql_script)
+        rows = cursor.fetchall()
+
+        # For each row append the relevant data to an array
+        rowarray_list = []
+        for row in rows:
+            t = (row[0], row[1], row[2])
+            rowarray_list.append(t)
+
+        # Convert the array into JSON
+        j = json.dumps(rowarray_list)
+
+        # Convert JSON to key-value pairs
+        objects_list = []
+        for row in rows:
+            d = collections.OrderedDict()
+            d["index_id"] = row[0]
+            d["index_name"] = row[1]
+            d["index_symbol"] = row[2]
+            objects_list.append(d)
+
+        # Convert key-value pairs to JSON
+        response = json.dumps(objects_list)
+        return(response),200
+    except:
+        return jsonify({'error':'there was an error getting the indexes'}), 400
+    
 # External API Request
 @app.route('/indexes/stock_data/<symbol>/<function>', methods=['GET'])
 def get_companies_time_series(symbol, function):
@@ -103,7 +145,7 @@ def get_companies_time_series(symbol, function):
         # Make the get equest
         response = requests.get(url, params=ploads)
 
-        return(response.text),200
+        return(json.loads(response.text)),200
     except:
         return jsonify({f'error':'there was an error getting the {symbol} stock data'}), 400
 
