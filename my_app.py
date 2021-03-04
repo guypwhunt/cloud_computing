@@ -100,7 +100,7 @@ def get_index(symbol):
         # Open a connection to the database
         cursor = conn.cursor()
 
-        # Perform the select statement and extract the rows
+        # Perform the select statement and extract the rows for the index
         sql_script = f"SELECT * FROM dbo.index_data WHERE index_symbol = '{symbol}'"
         cursor.execute(sql_script)
         rows = cursor.fetchall()
