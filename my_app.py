@@ -1,10 +1,13 @@
 # Import the necessary libraries
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import requests
+import requests_cache
 import pyodbc 
 import pandas as pd
 import json
 import collections
+
+requests_cache.install_cache('index_api_cache', backend='sqlite', expire_after=36000)
 
 app = Flask(__name__)
 
