@@ -1,0 +1,4 @@
+Flask
+requests
+requests_cache
+pyodbc

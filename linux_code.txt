@@ -5,6 +5,21 @@ sudo apt install python3-pip
 # Install REST Service
 pip3 install Flask
 
+# Install other libraries
+pip3 install pyjwt
+pip3 install requests
+pip3 install requests-cache
+
+# Install pyodbc
+sudo apt-get install unixodbc-dev
+pip3 install pyodbc
+
+# Install docker, nginx and gcc
+sudo apt install docker.io
+sudo docker pull nginx
+sudo apt-get install gcc
+
+
 # Create a new working directory
 cd ~
 mkdir app
@@ -17,17 +32,15 @@ sudo nano myapp.py
 
 # Update file permissions
 sudo chmod 777 myapp.py
-	
-# Install docker and nginx
-sudo apt update
-sudo apt install docker.io
-sudo docker pull nginx
 
 # Create a requirements.txt
 sudo nano requirements.txt
 
 # Add the following to the requirements.txt file
 Flask
+requests
+requests_cache
+pyodbc
 
 # Create a dockerfile
 sudo nano Dockerfile
