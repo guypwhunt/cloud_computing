@@ -35,9 +35,11 @@ def api_information():
 <p>Path: /indexes/"symbol"</p>
 <p>Example Path: /indexes/MCX</p>
 <br></br>
-<b>Get stock price data</b>
+<b>Get index information</b>
 <p>Request type: GET</p>
 <p>Path: /indexes/stock_data/"symbol"/"function"</p>
+<p>Index Price Time Series Function Options: TIME_SERIES_INTRADAY, TIME_SERIES_DAILY, TIME_SERIES_WEEKLY, TIME_SERIES_MONTHLY</p>
+<p>Index Fundamental Information Function Options: OVERVIEW, EARNINGS, INCOME_STATEMENT, BALANCE_SHEET, CASH_FLOW, LISTING_STATUS, EARNINGS_CALENDAR, IPO_CALENDAR</p>
 <p>Example Path: /indexes/stock_data/MCX/TIME_SERIES_MONTHLY</p>
 <br></br>
 <b>Add new index</b>
