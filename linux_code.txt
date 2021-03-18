@@ -1,11 +1,3 @@
-# Install AWSCLI
-sudo apt update
-sudo apt install awscli
-
-# Set up AWSCLI
-# When asked for you default region enter “‘us-east-1" and when asked for your default output enter “‘json"
-nano .aws/credentials
-
 # Install PIP
 sudo apt update
 sudo apt install python3-pip
@@ -18,9 +10,14 @@ pip3 install pyjwt
 pip3 install requests
 pip3 install requests-cache
 
-# Install pyodbc
+# Set Up my SQL
+sudo apt-get install mysql-client
+
+# Install SQL connectors
 sudo apt-get install unixodbc-dev
 pip3 install pyodbc
+pip3 install mysql-connector-python
+
 
 # Install docker, nginx and gcc
 sudo apt install docker.io
