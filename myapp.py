@@ -1,8 +1,8 @@
 # Import the necessary libraries
 from flask import Flask, jsonify, request, render_template
+import mysql.connector
 import requests
 import requests_cache
-import pyodbc 
 import json
 import collections
 
@@ -15,10 +15,12 @@ requests_cache.install_cache('index_api_cache', backend='sqlite', expire_after=3
 app = Flask(__name__)
 
 # Define the connection parameters for the SQL database
-"""conn = pyodbc.connect('Driver={SQL Server};'
-                      'Server=localhost\MSSQLSERVER01;'
-                      'Database=index;'
-                      'Trusted_Connection=yes;')"""
+mydb = mysql.connector.connect(
+  host="investment.cgwmqkwedlgo.us-east-1.rds.amazonaws.com",
+  user="Rafayet",
+  password="Cloud2021",
+  database="Invest"
+)
 
 @app.route('/')
 def api_information():
@@ -64,17 +66,17 @@ def api_information():
 </body>
 </html>"""
 
-"""# Get Request
+# Get Request
 @app.route('/indexes/', methods=['GET'])
 def get_indexes():
     # This function gets all the indexes in the database
     try:
         # Open a connection to the database
-        cursor = conn.cursor()
+        mycursor = mydb.cursor()
 
         # Perform the select statement and extract the rows
-        cursor.execute('SELECT * FROM dbo.index_data')
-        rows = cursor.fetchall()
+        mycursor.execute("select * from index_data")
+        rows = mycursor.fetchall()
 
         # For each row append the relevant data to an array
         rowarray_list = []
@@ -107,12 +109,13 @@ def get_index(symbol):
     # This function gets a specific index from the database
     try:
         # Open a connection to the database
-        cursor = conn.cursor()
+        mycursor = mydb.cursor()
 
         # Perform the select statement and extract the rows for the index
-        sql_script = 'SELECT * FROM dbo.index_data WHERE index_symbol = \'' + symbol + '\''
-        cursor.execute(sql_script)
-        rows = cursor.fetchall()
+        sql_script = 'SELECT * FROM index_data WHERE index_symbol = \'' + symbol + '\''
+        
+        mycursor.execute(sql_script)
+        rows = mycursor.fetchall()
 
         # For each row append the relevant data to an array
         rowarray_list = []
@@ -136,7 +139,8 @@ def get_index(symbol):
         response = json.dumps(objects_list)
         return(response),200
     except:
-        return jsonify({'error':'there was an error getting the indexes'}), 400"""
+        return jsonify({'error':'there was an error getting the indexes'}), 400
+        
     
 # External API Request
 @app.route('/indexes/stock_data/<symbol>/<function>', methods=['GET'])
@@ -158,7 +162,7 @@ def get_companies_time_series(symbol, function):
     except:
         return jsonify({'error':'there was an error getting the ' + symbol +' stock data'}), 400
 
-"""# Post Request
+# Post Request
 @app.route('/indexes/add_index', methods=['POST'])
 def create_an_index():
     # This function allows users to add an index to the database
@@ -172,19 +176,21 @@ def create_an_index():
             return jsonify({'error':'the new index needs to have a index_symbol'}), 400
 
         # Open a connection to the database
-        cursor = conn.cursor()
-
+        mycursor = mydb.cursor()
+        
         # Define input variables
         pk_index_id = request.json['pk_index_id']
         index_name = request.json['index_name']
         index_symbol = request.json['index_symbol']
         pk_index_id = str(pk_index_id)
-
+        
         # Create the appropriate SQL script
-        script = 'INSERT INTO [dbo].[index_data] ([pk_index_id], [index_name], [index_symbol]) VALUES (\'' + pk_index_id + '\', \'' + index_name + '\', \'' + index_symbol + '\')'
+        sql = "INSERT INTO index_data (pk_index_id, index_name, index_symbol) VALUES (%s, %s, %s)"
+        val = (pk_index_id, index_name, index_symbol)
 
         # Execute the SQL statement
-        cursor.execute(script)
+        mycursor.execute(sql, val)
+        mydb.commit()
         return jsonify({'message':'new index created: {}'.format([index_name])}), 201
     except:
         return jsonify({'error':'there was an error adding the index'}), 400
@@ -196,13 +202,15 @@ def delete_index(index_symbol):
     # This function allows user to delete an index
     try:
         # Open a connection to the database
-        cursor = conn.cursor()
+        mycursor = mydb.cursor()
 
         # Create the appropriate SQL script
-        script = 'DELETE FROM [dbo].[index_data] WHERE [index_symbol] = \''+index_symbol+'\''
+        script = 'DELETE FROM index_data WHERE index_symbol = \''+index_symbol+'\''
 
         # Execute the SQL statement
-        cursor.execute(script)
+        mycursor.execute(script)
+        mydb.commit()
+        
         return jsonify({'success': True}), 200
     except:
         return jsonify({'success': False}), 400
@@ -213,7 +221,7 @@ def update_index(index_symbol):
     # This function allows users to update an index
     try:
         # Open a connection to the database
-        cursor = conn.cursor()
+        mycursor = mydb.cursor()
 
         # Identify if the body contains all the necessary data
         if not request.json or not 'pk_index_id' in request.json:
@@ -224,15 +232,18 @@ def update_index(index_symbol):
         # Define input variables
         pk_index_id = request.json['pk_index_id']
         index_name = request.json['index_name']
+        pk_index_id = str(pk_index_id)
 
         # Create the appropriate SQL script
-        script = 'UPDATE [dbo].[index_data] SET pk_index_id = \''+ pk_index_id + '\', index_name = \'' + index_name + '\' WHERE [index_symbol] = \'' + index_symbol + '\''
+        script = 'UPDATE index_data SET pk_index_id = \''+ pk_index_id + '\', index_name = \'' + index_name + '\' WHERE index_symbol = \'' + index_symbol + '\''
         
         # Execute the SQL statement
-        cursor.execute(script)
-        return jsonify({'success': True}), 200
+        mycursor.execute(script)
+        mydb.commit()
+        row_count = (mycursor.rowcount, "record(s) affected")
+        return jsonify({'success': True, 'rows affected': row_count[0]}), 200
     except:
-        return jsonify({'success': False}), 400"""
+        return jsonify({'success': False}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
