@@ -1,22 +1,21 @@
 # Update proxy setttings
-unset http_proxy
-unset https_proxy
+#unset http_proxy
+#unset https_proxy
 
 # Install Kubernetes
-sudo apt update
-sudo apt install docker.io
-sudo snap install microk8s --classic
-sudo apt-get install swapspace
-sudo apt-get update
+#sudo apt update
+#sudo apt install docker.io
+#sudo snap install microk8s --classic
+#sudo apt-get install swapspace
+#sudo apt-get update
 
 # Install AWSCLI
+sudo apt update
 sudo apt install awscli
 
 # Set up AWSCLI
 # When asked for you default region enter “‘us-east-1" and when asked for your default output enter “‘json"
 nano .aws/credentials
-
-
 
 # Install PIP
 sudo apt update
@@ -39,54 +38,14 @@ sudo apt install docker.io
 sudo docker pull nginx
 sudo apt-get install gcc
 
+# Set up Git Repo
+git init
+git config user.name "guypwhunt"
+git config user.email "guypwhunt1992@gmail.com"
+git clone https://github.com/guypwhunt/cloud_computing
+
 # Create a new working directory
-cd ~
-mkdir app
-cd app
-
-# Create Rest service
-sudo nano myapp.py
-
-# Update myapp.py with the python code
-
-# Update file permissions
-sudo chmod 777 myapp.py
-
-# Create a requirements.txt
-sudo nano requirements.txt
-
-# Add the following to the requirements.txt file
-Flask
-requests
-requests_cache
-pyodbc
-
-# Create a dockerfile
-sudo nano Dockerfile
-
-# Add the following to the Dockerfile
-FROM python:3
-WORKDIR /app
-ADD requirements.txt .
-ADD myapp.py .
-# install FreeTDS and dependencies
-RUN apt-get update \
- && apt-get install unixodbc -y \
- && apt-get install unixodbc-dev -y \
- && apt-get install freetds-dev -y \
- && apt-get install freetds-bin -y \
- && apt-get install tdsodbc -y \
- && apt-get install --reinstall build-essential -y
-# populate "ocbcinst.ini" as this is where ODBC driver config sits
-RUN echo "[FreeTDS]\n\
-Description = FreeTDS Driver\n\
-Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so\n\
-Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so" >> /etc/odbcinst.ini
-#Pip command without proxy setting
-RUN pip install -r requirements.txt
-CMD ["python","-i","myapp.py"]
-
-
+cd cloud_computing
 
 # Build the doker image
 sudo docker build -t investment_app:v1 .
@@ -95,7 +54,7 @@ sudo docker build -t investment_app:v1 .
 sudo docker run -p 80:80 investment_app:v1
 
 # Deploying the application
-sudo microk8s kubectl create deployment test --image=investment_app --port=5000
-sudo microk8s.kubectl expose deployment test --type=LoadBalancer
-sudo microk8s.kubectl scale deployment test --replicas=10
-sudo microk8s.kubectl run test --image=investment_app #--port=5000
+#sudo microk8s kubectl create deployment test --image=investment_app --port=5000
+#sudo microk8s.kubectl expose deployment test --type=LoadBalancer
+#sudo microk8s.kubectl scale deployment test --replicas=10
+#sudo microk8s.kubectl run test --image=investment_app #--port=5000
