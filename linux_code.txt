@@ -1,14 +1,3 @@
-# Update proxy setttings
-#unset http_proxy
-#unset https_proxy
-
-# Install Kubernetes
-#sudo apt update
-#sudo apt install docker.io
-#sudo snap install microk8s --classic
-#sudo apt-get install swapspace
-#sudo apt-get update
-
 # Install AWSCLI
 sudo apt update
 sudo apt install awscli
@@ -53,8 +42,22 @@ sudo docker build -t investment_app:v1 .
 # Run the docker image
 sudo docker run -p 80:80 investment_app:v1
 
+
+
+##### IGNORE THE FOLLOWING LINES
 # Deploying the application
 #sudo microk8s kubectl create deployment test --image=investment_app --port=5000
 #sudo microk8s.kubectl expose deployment test --type=LoadBalancer
 #sudo microk8s.kubectl scale deployment test --replicas=10
 #sudo microk8s.kubectl run test --image=investment_app #--port=5000
+
+# Update proxy setttings
+#unset http_proxy
+#unset https_proxy
+
+# Install Kubernetes
+#sudo apt update
+#sudo apt install docker.io
+#sudo snap install microk8s --classic
+#sudo apt-get install swapspace
+#sudo apt-get update
