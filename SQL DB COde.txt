@@ -1,0 +1,6 @@
+Server: investment.cgwmqkwedlgo.us-east-1.rds.amazonaws.com
+Server: investment.cgwmqkwedlgo.us-east-1.rds.amazonaws.com
+DB: Investment
+Username:Rafayet
+Username:Rafayet@%
+Password: Cloud2021

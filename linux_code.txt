@@ -1,3 +1,23 @@
+# Update proxy setttings
+unset http_proxy
+unset https_proxy
+
+# Install Kubernetes
+sudo apt update
+sudo apt install docker.io
+sudo snap install microk8s --classic
+sudo apt-get install swapspace
+sudo apt-get update
+
+# Install AWSCLI
+sudo apt install awscli
+
+# Set up AWSCLI
+# When asked for you default region enter “‘us-east-1" and when asked for your default output enter “‘json"
+nano .aws/credentials
+
+
+
 # Install PIP
 sudo apt update
 sudo apt install python3-pip
@@ -18,7 +38,6 @@ pip3 install pyodbc
 sudo apt install docker.io
 sudo docker pull nginx
 sudo apt-get install gcc
-
 
 # Create a new working directory
 cd ~
@@ -75,3 +94,8 @@ sudo docker build -t investment_app:v1 .
 # Run the docker image
 sudo docker run -p 80:80 investment_app:v1
 
+# Deploying the application
+sudo microk8s kubectl create deployment test --image=investment_app --port=5000
+sudo microk8s.kubectl expose deployment test --type=LoadBalancer
+sudo microk8s.kubectl scale deployment test --replicas=10
+sudo microk8s.kubectl run test --image=investment_app #--port=5000
