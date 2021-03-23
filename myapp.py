@@ -116,30 +116,34 @@ def get_index(symbol):
         
         mycursor.execute(sql_script)
         rows = mycursor.fetchall()
+        
+        # Respond with an error if no rows were obtained from the SQL query
+        if rows == []:
+            return jsonify({'error':'the index does not exist'}), 404
+        else:        
+            # For each row append the relevant data to an array
+            rowarray_list = []
+            for row in rows:
+                t = (row[0], row[1], row[2])
+                rowarray_list.append(t)
 
-        # For each row append the relevant data to an array
-        rowarray_list = []
-        for row in rows:
-            t = (row[0], row[1], row[2])
-            rowarray_list.append(t)
+            # Convert the array into JSON
+            j = json.dumps(rowarray_list)
 
-        # Convert the array into JSON
-        j = json.dumps(rowarray_list)
+            # Convert JSON to key-value pairs
+            objects_list = []
+            for row in rows:
+                d = collections.OrderedDict()
+                d["index_id"] = row[0]
+                d["index_name"] = row[1]
+                d["index_symbol"] = row[2]
+                objects_list.append(d)
 
-        # Convert JSON to key-value pairs
-        objects_list = []
-        for row in rows:
-            d = collections.OrderedDict()
-            d["index_id"] = row[0]
-            d["index_name"] = row[1]
-            d["index_symbol"] = row[2]
-            objects_list.append(d)
-
-        # Convert key-value pairs to JSON
-        response = json.dumps(objects_list)
-        return(response),200
+            # Convert key-value pairs to JSON
+            response = json.dumps(objects_list)
+            return(response),200
     except:
-        return jsonify({'error':'there was an error getting the indexes'}), 400
+        return jsonify({'error':'there was an error getting the index'}), 400
         
     
 # External API Request
@@ -211,11 +215,16 @@ def delete_index(index_symbol):
         mycursor.execute(script)
         mydb.commit()
         
-        return jsonify({'success': True}), 200
+        # Respond with error if no rows were deleted
+        if mycursor.rowcount == 0:
+            return jsonify({'error':'the index does not exist'}), 404
+        else:
+            row_count = (mycursor.rowcount, "record(s) affected")
+            return jsonify({'success': True, 'rows affected': row_count[0]}), 200
     except:
         return jsonify({'success': False}), 400
 
-# Push Request
+# Put Request
 @app.route('/indexes/update_index/<index_symbol>', methods=['PUT'])
 def update_index(index_symbol):
     # This function allows users to update an index
@@ -240,8 +249,13 @@ def update_index(index_symbol):
         # Execute the SQL statement
         mycursor.execute(script)
         mydb.commit()
-        row_count = (mycursor.rowcount, "record(s) affected")
-        return jsonify({'success': True, 'rows affected': row_count[0]}), 200
+        
+        # Respond with error if no rows were updated
+        if mycursor.rowcount == 0:
+            return jsonify({'error':'the index does not exist'}), 404
+        else:
+            row_count = (mycursor.rowcount, "record(s) affected")
+            return jsonify({'success': True, 'rows affected': row_count[0]}), 200
     except:
         return jsonify({'success': False}), 400
 

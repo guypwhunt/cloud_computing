@@ -34,27 +34,29 @@ git clone https://github.com/guypwhunt/cloud_computing
 cd cloud_computing
 
 # Build the doker image
-sudo docker build -t investment_app:v1 .
+sudo docker build -t investment_app:v5 .
 	
 # Run the docker image
-sudo docker run -p 80:80 investment_app:v1
+sudo docker run -p 80:80 investment_app:v5
 
 
 
 ##### IGNORE THE FOLLOWING LINES
-# Deploying the application
-#sudo microk8s kubectl create deployment test --image=investment_app --port=5000
+
 #sudo microk8s.kubectl expose deployment test --type=LoadBalancer
 #sudo microk8s.kubectl scale deployment test --replicas=10
 #sudo microk8s.kubectl run test --image=investment_app #--port=5000
 
-# Update proxy setttings
-#unset http_proxy
-#unset https_proxy
-
 # Install Kubernetes
-#sudo apt update
-#sudo apt install docker.io
-#sudo snap install microk8s --classic
-#sudo apt-get install swapspace
-#sudo apt-get update
+sudo apt update
+sudo snap install microk8s --classic --channel=1.18/stable
+sudo apt-get install swapspace
+sudo apt-get update
+
+# Update proxy setttings
+unset http_proxy
+unset https_proxy
+
+# Deploying the application
+sudo microk8s kubectl run investment-app --image=investment_app:v5 --port=80
+
