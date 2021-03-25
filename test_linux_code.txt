@@ -1,0 +1,73 @@
+# Install busybox
+sudo apt-get install -y busybox.
+
+# Create folder 
+mkdir forketyfork
+
+# Add docker file
+sudo nano Dockerfile
+
+# Add contents to docker file
+FROM busybox
+CMD [“echo”, “Hello World!”]
+
+# Build and run the docker file
+sudo docker build . -t forketyfork/hello-world
+sudo docker run forketyfork/hello-world
+
+# Create yaml file
+sudo nano helloworld.yml
+
+# Add content 
+--- 
+apiVersion: batch/v1
+kind: Job
+metadata: 
+  name: hello-world
+spec: 
+  template: 
+    metadata: 
+      name: hello-world-pod
+    spec: 
+      containers: 
+        - 
+          image: forketyfork/hello-world
+          imagePullPolicy: Never
+          name: hello-world
+      restartPolicy: Never
+
+# Create job
+sudo microk8s kubectl create -f helloworld.yml
+
+
+# Run Updates
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# Install required packages
+sudo apt-get install curl
+sudo apt-get install apt-transport-https
+sudo apt install virtualbox virtualbox-ext-pack
+sudo apt-get install -y conntrack
+
+
+# Insatll minikube
+wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo cp minikube-linux-amd64 /usr/local/bin/minikube
+sudo chmod 755 /usr/local/bin/minikube
+minikube version
+
+# Install Kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+sudo chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+sudo kubectl version -o json
+
+# Add permissions
+sudo chown -R $USER $HOME/.minikube; chmod -R u+wrx $HOME/.minikube
+
+# Start Minikube
+minikube start
+
+# 
+minikube docker-env

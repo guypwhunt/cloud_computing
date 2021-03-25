@@ -1,5 +1,5 @@
 # Install PIP
-sudo apt update
+sudo apt update -y
 sudo apt install python3-pip
 
 # Install REST Service
@@ -18,7 +18,6 @@ sudo apt-get install unixodbc-dev
 pip3 install pyodbc
 pip3 install mysql-connector-python
 
-
 # Install docker, nginx and gcc
 sudo apt install docker.io
 sudo docker pull nginx
@@ -34,29 +33,111 @@ git clone https://github.com/guypwhunt/cloud_computing
 cd cloud_computing
 
 # Build the doker image
-sudo docker build -t investment_app:v5 .
+sudo docker build -t guypwhunt1992/investment_app:v5 .
 	
 # Run the docker image
-sudo docker run -p 80:80 investment_app:v5
+sudo docker run -p 80:80 guypwhunt1992/investment_app:v5
 
+# Find docker image id
+sudo docker images
 
+# Tag docker image correctly
+sudo docker tag 99e0d247e31e guypwhunt1992/investment_app:v5
 
-##### IGNORE THE FOLLOWING LINES
+# Docker Login
+sudo docker login
 
-#sudo microk8s.kubectl expose deployment test --type=LoadBalancer
-#sudo microk8s.kubectl scale deployment test --replicas=10
-#sudo microk8s.kubectl run test --image=investment_app #--port=5000
+# Push image to registery
+sudo docker push guypwhunt1992/investment_app:v5
+
+# Start the container from image
+sudo docker container run -d -it --name investment guypwhunt1992/investment_app:v5
 
 # Install Kubernetes
-sudo apt update
-sudo snap install microk8s --classic --channel=1.18/stable
-sudo apt-get install swapspace
+sudo apt update -y
+sudo apt install docker.io -y
+sudo snap install microk8s --classic 
 sudo apt-get update
 
-# Update proxy setttings
-unset http_proxy
-unset https_proxy
+# Build POD from Manifest file
+sudo nano create-investmentpod.yml
 
-# Deploying the application
-sudo microk8s kubectl run investment-app --image=investment_app:v5 --port=80
+# Add content to yaml file
+apiVersion: v1
+kind: Pod
+metadata:
+   name: investment-pod
+spec:
+   containers:
+   - name: investment-container01
+     image: guypwhunt1992/investment_app:v5
+     ports:
+     - containerPort: 6379
 
+# Create POD from Manifest file
+sudo microk8s kubectl create -f create-investmentpod.yml
+
+# Check it is running
+sudo microk8s kubectl get pods
+
+# Create a deployment
+sudo microk8s kubectl create deployment investment --image=guypwhunt1992/investment_app:v5 --port=80
+
+# Create a load balancer
+sudo microk8s kubectl expose deployment investment --type=LoadBalancer --port 80 --target-port 80
+
+# Scale the deployment
+sudo microk8s kubectl scale deployment investment --replicas=3
+
+
+
+
+## Ignore these lines
+sudo microk8s kubectl expose deployment investment-pod --type=LoadBalancer --port 80 --target-port 80
+
+# Install the registry 
+sudo microk8s enable registry
+
+# Find docker image ID
+sudo docker images
+
+# Tag the docker image and send to registery
+sudo docker tag 21cc90b7164d localhost:32000/investment_app:v5
+sudo docker push localhost:32000/investment_app
+
+# Restart Docker daemon
+sudo systemctl restart docker
+
+# Enable ambassador
+sudo microk8s enable ambassador
+sudo microk8s.kubectl apply -f -
+
+# 21cc90b7164d
+sudo microk8s kubectl create deployment investment-app --image=21cc90b7164d --port=80
+
+
+# Create deployment
+sudo microk8s kubectl create deployment investment-app --image=investment_app:v5 --port=80
+sudo microk8s kubectl get all
+
+# Create Load Balancer
+sudo microk8s.kubectl expose deployment investment-app --type=LoadBalancer --port 80 --target-port 80
+
+# Scale up application
+sudo microk8s kubectl scale deployment investment-app --replicas=10
+
+# Save dockerfile
+sudo docker save investment_app > investment_app.tar
+sudo microk8s ctr image import investment_app.tar
+sudo microk8s kubectl run discovery –image=investment_app:v5 –port=8761
+
+apiVersion: v1
+kind: Pod
+metadata:
+   name: investment-pod
+spec:
+   containers:
+   - name: investment-container01
+     image: guypwhunt1992/investment_app:v5
+     ports:
+     - containerPort: 6379
