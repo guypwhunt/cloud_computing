@@ -15,12 +15,12 @@ requests_cache.install_cache('index_api_cache', backend='sqlite', expire_after=3
 app = Flask(__name__)
 
 # Define the connection parameters for the SQL database
-"""mydb = mysql.connector.connect(
+mydb = mysql.connector.connect(
   host="investment.cgwmqkwedlgo.us-east-1.rds.amazonaws.com",
   user="Rafayet",
   password="Cloud2021",
   database="Invest"
-)"""
+)
 
 @app.route('/')
 def api_information():
@@ -66,7 +66,7 @@ def api_information():
 </body>
 </html>"""
 
-"""# Get Request
+# Get Request
 @app.route('/indexes/', methods=['GET'])
 def get_indexes():
     # This function gets all the indexes in the database
@@ -257,7 +257,7 @@ def update_index(index_symbol):
             row_count = (mycursor.rowcount, "record(s) affected")
             return jsonify({'success': True, 'rows affected': row_count[0]}), 200
     except:
-        return jsonify({'success': False}), 400"""
+        return jsonify({'success': False}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
