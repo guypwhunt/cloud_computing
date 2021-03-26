@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "140d7f1d-57be-41bc-9446-19c9d2100f30",
+		"name": "cloud_computing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add New Index",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"pk_index_id\": 10,\r\n\"index_name\": \"TEST INDEX\",\r\n\"index_symbol\": \"TEST\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com//indexes/add_index",
+					"protocol": "http",
+					"host": [
+						"ec2-34-238-115-179",
+						"compute-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"",
+						"indexes",
+						"add_index"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Index",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pk_index_id\": \"10\",\r\n    \"index_name\": \"Guy Index\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/indexes/update_index/TEST",
+					"protocol": "http",
+					"host": [
+						"ec2-34-238-115-179",
+						"compute-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"indexes",
+						"update_index",
+						"TEST"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Index",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/indexes/delete_index/TEST",
+					"protocol": "http",
+					"host": [
+						"ec2-34-238-115-179",
+						"compute-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"indexes",
+						"delete_index",
+						"TEST"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Home Page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com",
+					"protocol": "http",
+					"host": [
+						"ec2-54-173-123-82",
+						"compute-1",
+						"amazonaws",
+						"com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Indexes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/index",
+					"protocol": "http",
+					"host": [
+						"ec2-54-173-123-82",
+						"compute-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"index"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific Index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/index/MCX",
+					"protocol": "http",
+					"host": [
+						"ec2-54-173-123-82",
+						"compute-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"index",
+						"MCX"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
