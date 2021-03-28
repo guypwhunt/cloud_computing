@@ -58,7 +58,7 @@ def api_information():
 <br></br>
 <b>Update stock</b>
 <p>Request type: PUT</p>
-<p>Path: /stocks/update_stock/"stock_symbol"</p>
+<p>Path: /stocks/update_stock/"symbol"</p>
 <p>Example Body: {
     "pk_stock_id": "10",
     "stock_name": "TEST STOCK 2"
@@ -66,7 +66,7 @@ def api_information():
 <br></br>
 <b>Delete stock</b>
 <p>Request type: PUT</p>
-<p>Path: /stocks/delete_stock/"stock_symbol"</p>
+<p>Path: /stocks/delete_stock/"symbol"</p>
 <br></br>
 </body>
 </html>"""
@@ -225,15 +225,15 @@ def create_an_stock():
 
 
 # Delete Request
-@app.route('/stocks/delete_stock/<stock_symbol>', methods=['DELETE'])
-def delete_stock(stock_symbol):
+@app.route('/stocks/delete_stock/<symbol>', methods=['DELETE'])
+def delete_stock(symbol):
     # This function allows user to delete an stock
     try:
         # Open a connection to the database
         mycursor = mydb.cursor()
 
         # Create the appropriate SQL script
-        script = 'DELETE FROM stock_data WHERE stock_symbol = \''+stock_symbol+'\''
+        script = 'DELETE FROM stock_data WHERE stock_symbol = \''+symbol+'\''
 
         # Execute the SQL statement
         mycursor.execute(script)
@@ -249,8 +249,8 @@ def delete_stock(stock_symbol):
         return jsonify({'success': False}), 400
 
 # Put Request
-@app.route('/stocks/update_stock/<stock_symbol>', methods=['PUT'])
-def update_stock(stock_symbol):
+@app.route('/stocks/update_stock/<symbol>', methods=['PUT'])
+def update_stock(symbol):
     # This function allows users to update an stock
     try:
         # Open a connection to the database
@@ -268,7 +268,7 @@ def update_stock(stock_symbol):
         pk_stock_id = str(pk_stock_id)
 
         # Create the appropriate SQL script
-        script = 'UPDATE stock_data SET pk_stock_id = \''+ pk_stock_id + '\', stock_name = \'' + stock_name + '\' WHERE stock_symbol = \'' + stock_symbol + '\''
+        script = 'UPDATE stock_data SET pk_stock_id = \''+ pk_stock_id + '\', stock_name = \'' + stock_name + '\' WHERE stock_symbol = \'' + symbol + '\''
         
         # Execute the SQL statement
         mycursor.execute(script)

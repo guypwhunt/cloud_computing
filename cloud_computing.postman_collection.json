@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"pk_index_id\": 10,\r\n\"index_name\": \"TEST INDEX\",\r\n\"index_symbol\": \"TEST\"}",
+					"raw": "{\"pk_stock_id\": 10,\r\n\"stock_name\": \"TEST INDEX\",\r\n\"stock_symbol\": \"TEST\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,7 +20,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com//indexes/add_index",
+					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/stocks/add_stock",
 					"protocol": "http",
 					"host": [
 						"ec2-34-238-115-179",
@@ -29,9 +29,8 @@
 						"com"
 					],
 					"path": [
-						"",
-						"indexes",
-						"add_index"
+						"stocks",
+						"add_stock"
 					]
 				}
 			},
@@ -44,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pk_index_id\": \"10\",\r\n    \"index_name\": \"Guy Index\"\r\n}",
+					"raw": "{\r\n    \"pk_stock_id\": \"10\",\r\n    \"stock_name\": \"Guy Index\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,7 +51,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/indexes/update_index/TEST",
+					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/stocks/stock_index/TEST",
 					"protocol": "http",
 					"host": [
 						"ec2-34-238-115-179",
@@ -61,8 +60,8 @@
 						"com"
 					],
 					"path": [
-						"indexes",
-						"update_index",
+						"stocks",
+						"stock_index",
 						"TEST"
 					]
 				}
@@ -75,7 +74,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/indexes/delete_index/TEST",
+					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/stocks/delete_stock/TEST",
 					"protocol": "http",
 					"host": [
 						"ec2-34-238-115-179",
@@ -84,8 +83,8 @@
 						"com"
 					],
 					"path": [
-						"indexes",
-						"delete_index",
+						"stocks",
+						"delete_stock",
 						"TEST"
 					]
 				}
@@ -116,7 +115,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/index",
+					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/stocks",
 					"protocol": "http",
 					"host": [
 						"ec2-54-173-123-82",
@@ -125,7 +124,7 @@
 						"com"
 					],
 					"path": [
-						"index"
+						"stocks"
 					]
 				}
 			},
@@ -137,7 +136,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/index/MCX",
+					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/stocks/MCX",
 					"protocol": "http",
 					"host": [
 						"ec2-54-173-123-82",
@@ -146,7 +145,7 @@
 						"com"
 					],
 					"path": [
-						"index",
+						"stocks",
 						"MCX"
 					]
 				}
