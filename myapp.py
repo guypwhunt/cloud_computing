@@ -10,7 +10,7 @@ import collections
 #import jwt
 #import pandas as pd
 
-requests_cache.install_cache('index_api_cache', backend='sqlite', expire_after=36000)
+requests_cache.install_cache('stock_api_cache', backend='sqlite', expire_after=36000)
 
 app = Flask(__name__)
 
@@ -28,54 +28,59 @@ def api_information():
     return """<html>
 <body>
 <h1>APIs</h1>
-<b>Get all the indexes</b>
+<b>Get all the stocks</b>
 <p>Request type: GET</p>
-<p>Path: /indexes/</p>
+<p>Path: /stocks/</p>
 <br></br>
-<b>Get a specific index</b>
+<b>Get a specific stock</b>
 <p>Request type: GET</p>
-<p>Path: /indexes/"symbol"</p>
-<p>Example Path: /indexes/MCX</p>
+<p>Path: /stocks/"symbol"</p>
+<p>Example Path: /stocks/MCX</p>
 <br></br>
-<b>Get index information</b>
+<b>Get stock information</b>
 <p>Request type: GET</p>
-<p>Path: /indexes/stock_data/"symbol"/"function"</p>
-<p>Index Price Time Series Function Options: TIME_SERIES_INTRADAY, TIME_SERIES_DAILY, TIME_SERIES_WEEKLY, TIME_SERIES_MONTHLY</p>
-<p>Index Fundamental Information Function Options: OVERVIEW, EARNINGS, INCOME_STATEMENT, BALANCE_SHEET, CASH_FLOW, LISTING_STATUS, EARNINGS_CALENDAR, IPO_CALENDAR</p>
-<p>Example Path: /indexes/stock_data/MCX/TIME_SERIES_MONTHLY</p>
+<p>Path: /stocks/stock_data/"symbol"/"function"</p>
+<p>Stock Price Time Series Function Options: TIME_SERIES_INTRADAY, TIME_SERIES_DAILY, TIME_SERIES_WEEKLY, TIME_SERIES_MONTHLY</p>
+<p>Stock Fundamental Information Function Options: OVERVIEW, EARNINGS, INCOME_STATEMENT, BALANCE_SHEET, CASH_FLOW, LISTING_STATUS, EARNINGS_CALENDAR, IPO_CALENDAR</p>
+<p>Example Path: /stocks/stock_data/MCX/TIME_SERIES_MONTHLY</p>
 <br></br>
-<b>Add new index</b>
+<b>Search for stock symbol</b>
+<p>Request type: GET</p>
+<p>Path: /stocks/search/"stock_name"</p>
+<p>Example Path: /stocks/search/Microsoft</p>
+<br></br>
+<b>Add new stock</b>
 <p>Request type: POST</p>
-<p>Path: /indexes/add_index</p>
-<p>Example Body: {"pk_index_id": 10,
-    "index_name": "TEST INDEX",
-    "index_symbol": "TEST"}</p>
+<p>Path: /stocks/add_stock</p>
+<p>Example Body: {"pk_stock_id": 10,
+    "stock_name": "TEST STOCK",
+    "stock_symbol": "TEST"}</p>
 <br></br>
-<b>Update index</b>
+<b>Update stock</b>
 <p>Request type: PUT</p>
-<p>Path: /indexes/update_index/"index_symbol"</p>
+<p>Path: /stocks/update_stock/"stock_symbol"</p>
 <p>Example Body: {
-    "pk_index_id": "10",
-    "index_name": "TEST INDEX 2"
+    "pk_stock_id": "10",
+    "stock_name": "TEST STOCK 2"
 }</p>
 <br></br>
-<b>Delete index</b>
+<b>Delete stock</b>
 <p>Request type: PUT</p>
-<p>Path: /indexes/delete_index/"index_symbol"</p>
+<p>Path: /stocks/delete_stock/"stock_symbol"</p>
 <br></br>
 </body>
 </html>"""
 
 # Get Request
-@app.route('/indexes/', methods=['GET'])
-def get_indexes():
-    # This function gets all the indexes in the database
+@app.route('/stocks/', methods=['GET'])
+def get_stocks():
+    # This function gets all the stocks in the database
     try:
         # Open a connection to the database
         mycursor = mydb.cursor()
 
         # Perform the select statement and extract the rows
-        mycursor.execute("select * from index_data")
+        mycursor.execute("select * from stock_data")
         rows = mycursor.fetchall()
 
         # For each row append the relevant data to an array
@@ -91,9 +96,9 @@ def get_indexes():
         objects_list = []
         for row in rows:
             d = collections.OrderedDict()
-            d["index_id"] = row[0]
-            d["index_name"] = row[1]
-            d["index_symbol"] = row[2]
+            d["stock_id"] = row[0]
+            d["stock_name"] = row[1]
+            d["stock_symbol"] = row[2]
             objects_list.append(d)
         
         # Convert key-value pairs to JSON
@@ -101,25 +106,25 @@ def get_indexes():
         #response = jwt.encode(response, 'secret', algorithm='HS256')
         return(response),200
     except:
-        return jsonify({'error':'there was an error getting the indexes'}), 400
+        return jsonify({'error':'there was an error getting the stocks'}), 400
 
 # Get Request
-@app.route('/indexes/<symbol>', methods=['GET'])
-def get_index(symbol):
-    # This function gets a specific index from the database
+@app.route('/stocks/<symbol>', methods=['GET'])
+def get_stock(symbol):
+    # This function gets a specific stock from the database
     try:
         # Open a connection to the database
         mycursor = mydb.cursor()
 
-        # Perform the select statement and extract the rows for the index
-        sql_script = 'SELECT * FROM index_data WHERE index_symbol = \'' + symbol + '\''
+        # Perform the select statement and extract the rows for the stock
+        sql_script = 'SELECT * FROM stock_data WHERE stock_symbol = \'' + symbol + '\''
         
         mycursor.execute(sql_script)
         rows = mycursor.fetchall()
         
         # Respond with an error if no rows were obtained from the SQL query
         if rows == []:
-            return jsonify({'error':'the index does not exist'}), 404
+            return jsonify({'error':'the stock does not exist'}), 404
         else:        
             # For each row append the relevant data to an array
             rowarray_list = []
@@ -134,22 +139,41 @@ def get_index(symbol):
             objects_list = []
             for row in rows:
                 d = collections.OrderedDict()
-                d["index_id"] = row[0]
-                d["index_name"] = row[1]
-                d["index_symbol"] = row[2]
+                d["stock_id"] = row[0]
+                d["stock_name"] = row[1]
+                d["stock_symbol"] = row[2]
                 objects_list.append(d)
 
             # Convert key-value pairs to JSON
             response = json.dumps(objects_list)
             return(response),200
     except:
-        return jsonify({'error':'there was an error getting the index'}), 400
+        return jsonify({'error':'there was an error getting the stock'}), 400
         
     
 # External API Request
-@app.route('/indexes/stock_data/<symbol>/<function>', methods=['GET'])
-def get_companies_time_series(symbol, function):
-    # This function gets the indexes stock price time series data
+@app.route('/stocks/search/<stock_name>', methods=['GET'])
+def get_search_stock(stock_name):
+    # This function gets the stocks symbol and basic information
+    try:
+        # Define the non-variable API parameters 
+        ploads = {'datatype': 'json', 'apikey': '5VKW15ETPEN1FRNO', 'function': 'SYMBOL_SEARCH'}
+        url = 'https://www.alphavantage.co/query?'
+
+        # Update the variable parameters
+        ploads['keywords'] = stock_name
+        
+        # Make the get equest
+        response = requests.get(url, params=ploads)
+
+        return(json.loads(response.text)),200
+    except:
+        return jsonify({'error':'there was an error getting the ' + symbol +' information'}), 400
+        
+# External API Request
+@app.route('/stocks/stock_data/<symbol>/<function>', methods=['GET'])
+def get_stock_time_series(symbol, function):
+    # This function gets the stocks stock price time series data
     try:
         # Define the non-variable API parameters 
         ploads = {'datatype': 'json', 'apikey': '5VKW15ETPEN1FRNO'}
@@ -167,49 +191,49 @@ def get_companies_time_series(symbol, function):
         return jsonify({'error':'there was an error getting the ' + symbol +' stock data'}), 400
 
 # Post Request
-@app.route('/indexes/add_index', methods=['POST'])
-def create_an_index():
-    # This function allows users to add an index to the database
+@app.route('/stocks/add_stock', methods=['POST'])
+def create_an_stock():
+    # This function allows users to add an stock to the database
     try:
         # Identify if the body contains all the necessary data
-        if not request.json or not 'pk_index_id' in request.json:
-            return jsonify({'error':'the new index needs to have a pk_index_id'}), 400
-        if not request.json or not 'index_name' in request.json:
-            return jsonify({'error':'the new index needs to have a index_name'}), 400
-        if not request.json or not 'index_symbol' in request.json:
-            return jsonify({'error':'the new index needs to have a index_symbol'}), 400
+        if not request.json or not 'pk_stock_id' in request.json:
+            return jsonify({'error':'the new stock needs to have a pk_stock_id'}), 400
+        if not request.json or not 'stock_name' in request.json:
+            return jsonify({'error':'the new stock needs to have a stock_name'}), 400
+        if not request.json or not 'stock_symbol' in request.json:
+            return jsonify({'error':'the new stock needs to have a stock_symbol'}), 400
 
         # Open a connection to the database
         mycursor = mydb.cursor()
         
         # Define input variables
-        pk_index_id = request.json['pk_index_id']
-        index_name = request.json['index_name']
-        index_symbol = request.json['index_symbol']
-        pk_index_id = str(pk_index_id)
+        pk_stock_id = request.json['pk_stock_id']
+        stock_name = request.json['stock_name']
+        stock_symbol = request.json['stock_symbol']
+        pk_stock_id = str(pk_stock_id)
         
         # Create the appropriate SQL script
-        sql = "INSERT INTO index_data (pk_index_id, index_name, index_symbol) VALUES (%s, %s, %s)"
-        val = (pk_index_id, index_name, index_symbol)
+        sql = "INSERT INTO stock_data (pk_stock_id, stock_name, stock_symbol) VALUES (%s, %s, %s)"
+        val = (pk_stock_id, stock_name, stock_symbol)
 
         # Execute the SQL statement
         mycursor.execute(sql, val)
         mydb.commit()
-        return jsonify({'message':'new index created: {}'.format([index_name])}), 201
+        return jsonify({'message':'new stock created: {}'.format([stock_name])}), 201
     except:
-        return jsonify({'error':'there was an error adding the index'}), 400
+        return jsonify({'error':'there was an error adding the stock'}), 400
 
 
 # Delete Request
-@app.route('/indexes/delete_index/<index_symbol>', methods=['DELETE'])
-def delete_index(index_symbol):
-    # This function allows user to delete an index
+@app.route('/stocks/delete_stock/<stock_symbol>', methods=['DELETE'])
+def delete_stock(stock_symbol):
+    # This function allows user to delete an stock
     try:
         # Open a connection to the database
         mycursor = mydb.cursor()
 
         # Create the appropriate SQL script
-        script = 'DELETE FROM index_data WHERE index_symbol = \''+index_symbol+'\''
+        script = 'DELETE FROM stock_data WHERE stock_symbol = \''+stock_symbol+'\''
 
         # Execute the SQL statement
         mycursor.execute(script)
@@ -217,7 +241,7 @@ def delete_index(index_symbol):
         
         # Respond with error if no rows were deleted
         if mycursor.rowcount == 0:
-            return jsonify({'error':'the index does not exist'}), 404
+            return jsonify({'error':'the stock does not exist'}), 404
         else:
             row_count = (mycursor.rowcount, "record(s) affected")
             return jsonify({'success': True, 'rows affected': row_count[0]}), 200
@@ -225,26 +249,26 @@ def delete_index(index_symbol):
         return jsonify({'success': False}), 400
 
 # Put Request
-@app.route('/indexes/update_index/<index_symbol>', methods=['PUT'])
-def update_index(index_symbol):
-    # This function allows users to update an index
+@app.route('/stocks/update_stock/<stock_symbol>', methods=['PUT'])
+def update_stock(stock_symbol):
+    # This function allows users to update an stock
     try:
         # Open a connection to the database
         mycursor = mydb.cursor()
 
         # Identify if the body contains all the necessary data
-        if not request.json or not 'pk_index_id' in request.json:
-            return jsonify({'error':'the updated index needs to have a pk_index_id'}), 400
-        if not request.json or not 'index_name' in request.json:
-            return jsonify({'error':'the updated index needs to have a index_name'}), 400
+        if not request.json or not 'pk_stock_id' in request.json:
+            return jsonify({'error':'the updated stock needs to have a pk_stock_id'}), 400
+        if not request.json or not 'stock_name' in request.json:
+            return jsonify({'error':'the updated stock needs to have a stock_name'}), 400
         
         # Define input variables
-        pk_index_id = request.json['pk_index_id']
-        index_name = request.json['index_name']
-        pk_index_id = str(pk_index_id)
+        pk_stock_id = request.json['pk_stock_id']
+        stock_name = request.json['stock_name']
+        pk_stock_id = str(pk_stock_id)
 
         # Create the appropriate SQL script
-        script = 'UPDATE index_data SET pk_index_id = \''+ pk_index_id + '\', index_name = \'' + index_name + '\' WHERE index_symbol = \'' + index_symbol + '\''
+        script = 'UPDATE stock_data SET pk_stock_id = \''+ pk_stock_id + '\', stock_name = \'' + stock_name + '\' WHERE stock_symbol = \'' + stock_symbol + '\''
         
         # Execute the SQL statement
         mycursor.execute(script)
@@ -252,7 +276,7 @@ def update_index(index_symbol):
         
         # Respond with error if no rows were updated
         if mycursor.rowcount == 0:
-            return jsonify({'error':'the index does not exist'}), 404
+            return jsonify({'error':'the stock does not exist'}), 404
         else:
             row_count = (mycursor.rowcount, "record(s) affected")
             return jsonify({'success': True, 'rows affected': row_count[0]}), 200
