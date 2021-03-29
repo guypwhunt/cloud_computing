@@ -14,13 +14,17 @@ requests_cache.install_cache('stock_api_cache', backend='sqlite', expire_after=3
 
 app = Flask(__name__)
 
-# Define the connection parameters for the SQL database
-mydb = mysql.connector.connect(
-  host="investment.cgwmqkwedlgo.us-east-1.rds.amazonaws.com",
-  user="Rafayet",
-  password="Cloud2021",
-  database="Invest"
-)
+# This allows for testing when the database is turned off
+try:
+    # Define the connection parameters for the SQL database
+    mydb = mysql.connector.connect(
+    host="investment.cgwmqkwedlgo.us-east-1.rds.amazonaws.com",
+    user="Rafayet",
+    password="Cloud2021",
+    database="Invest"
+    )
+except:
+    
 
 @app.route('/')
 def api_information():
