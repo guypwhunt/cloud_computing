@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"pk_stock_id\": 10,\r\n\"stock_name\": \"TEST INDEX\",\r\n\"stock_symbol\": \"TEST\"}",
+					"raw": "{\"pk_stock_id\": 3,\r\n\"stock_name\": \"Microsoft Corporation\",\r\n\"stock_symbol\": \"MSFT\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,14 +20,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/stocks/add_stock",
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/add_stock",
 					"protocol": "http",
 					"host": [
-						"ec2-34-238-115-179",
+						"ec2-100-26-233-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
+					"port": "30172",
 					"path": [
 						"stocks",
 						"add_stock"
@@ -43,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pk_stock_id\": \"10\",\r\n    \"stock_name\": \"Guy Index\"\r\n}",
+					"raw": "{\r\n    \"pk_stock_id\": \"3\",\r\n    \"stock_name\": \"Microsoft\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,18 +52,19 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/stocks/stock_index/TEST",
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/update_stock/MSFT",
 					"protocol": "http",
 					"host": [
-						"ec2-34-238-115-179",
+						"ec2-100-26-233-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
+					"port": "30172",
 					"path": [
 						"stocks",
-						"stock_index",
-						"TEST"
+						"update_stock",
+						"MSFT"
 					]
 				}
 			},
@@ -74,18 +76,19 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-34-238-115-179.compute-1.amazonaws.com/stocks/delete_stock/TEST",
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/delete_stock/MSFT",
 					"protocol": "http",
 					"host": [
-						"ec2-34-238-115-179",
+						"ec2-100-26-233-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
+					"port": "30172",
 					"path": [
 						"stocks",
 						"delete_stock",
-						"TEST"
+						"MSFT"
 					]
 				}
 			},
@@ -97,14 +100,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com",
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172",
 					"protocol": "http",
 					"host": [
-						"ec2-54-173-123-82",
+						"ec2-100-26-233-136",
 						"compute-1",
 						"amazonaws",
 						"com"
-					]
+					],
+					"port": "30172"
 				}
 			},
 			"response": []
@@ -115,14 +119,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/stocks",
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks",
 					"protocol": "http",
 					"host": [
-						"ec2-54-173-123-82",
+						"ec2-100-26-233-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
+					"port": "30172",
 					"path": [
 						"stocks"
 					]
@@ -136,17 +141,62 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-54-173-123-82.compute-1.amazonaws.com/stocks/MCX",
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/MCX",
 					"protocol": "http",
 					"host": [
-						"ec2-54-173-123-82",
+						"ec2-100-26-233-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
+					"port": "30172",
 					"path": [
 						"stocks",
 						"MCX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search for Stock Symbol",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/stocks/search/Microsoft",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"stocks",
+						"search",
+						"Microsoft"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Stock Information",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/stock_data/AMZN/TIME_SERIES_MONTHLY",
+					"protocol": "http",
+					"host": [
+						"ec2-100-26-233-136",
+						"compute-1",
+						"amazonaws",
+						"com"
+					],
+					"port": "30172",
+					"path": [
+						"stocks",
+						"stock_data",
+						"AMZN",
+						"TIME_SERIES_MONTHLY"
 					]
 				}
 			},

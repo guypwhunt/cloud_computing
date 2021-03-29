@@ -31,25 +31,25 @@ git clone https://github.com/guypwhunt/cloud_computing
 cd cloud_computing
 
 # Build the doker image
-sudo docker build -t guypwhunt1992/investment_app:v8 .
+sudo docker build -t guypwhunt1992/investment_app:v9 .
 	
 # Run the docker image
-sudo docker run -p 80:80 guypwhunt1992/investment_app:v8
+sudo docker run -p 80:80 guypwhunt1992/investment_app:v9
 
 # Find docker image id
 sudo docker images
 
 # Tag docker image correctly
-sudo docker tag ffcb4e6ebf5c guypwhunt1992/investment_app:v8
+sudo docker tag ffcb4e6ebf5c guypwhunt1992/investment_app:v9
 
 # Docker Login
 sudo docker login
 
 # Push image to registery
-sudo docker push guypwhunt1992/investment_app:v8
+sudo docker push guypwhunt1992/investment_app:v9
 
 # Start the container from image
-sudo docker container run -d -it --name investment guypwhunt1992/investment_app:v8
+sudo docker container run -d -it --name investment guypwhunt1992/investment_app:v9
 
 # Install Kubernetes
 sudo apt update -y
@@ -68,7 +68,7 @@ metadata:
 spec:
    containers:
    - name: investment-container01
-     image: guypwhunt1992/investment_app:v8
+     image: guypwhunt1992/investment_app:v9
      ports:
      - containerPort: 6379
 
@@ -79,7 +79,7 @@ spec:
 sudo microk8s kubectl get all
 
 # Create a deployment
-sudo microk8s kubectl create deployment investment --image=guypwhunt1992/investment_app:v8 --port=80
+sudo microk8s kubectl create deployment investment --image=guypwhunt1992/investment_app:v9 --port=80
 
 # Create a load balancer
 sudo microk8s kubectl expose deployment investment --type=LoadBalancer --port 80 --target-port 80
