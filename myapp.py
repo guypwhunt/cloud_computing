@@ -24,7 +24,8 @@ try:
     database="Invest"
     )
 except:
-    
+    x=1
+
 
 @app.route('/')
 def api_information():
