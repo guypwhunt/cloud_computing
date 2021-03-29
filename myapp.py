@@ -42,17 +42,17 @@ def api_information():
 <p>Path: /stocks/"symbol"</p>
 <p>Example Path: /stocks/AMZN</p>
 <br></br>
+<b>Search for stock symbol</b>
+<p>Request type: GET</p>
+<p>Path: /stocks/search/"stock_name"</p>
+<p>Example Path: /stocks/search/Microsoft</p>
+<br></br>
 <b>Get stock information</b>
 <p>Request type: GET</p>
 <p>Path: /stocks/stock_data/"symbol"/"function"</p>
 <p>Stock Price Time Series Function Options: TIME_SERIES_INTRADAY, TIME_SERIES_DAILY, TIME_SERIES_WEEKLY, TIME_SERIES_MONTHLY</p>
 <p>Stock Fundamental Information Function Options: OVERVIEW, EARNINGS, INCOME_STATEMENT, BALANCE_SHEET, CASH_FLOW, LISTING_STATUS, EARNINGS_CALENDAR, IPO_CALENDAR</p>
 <p>Example Path: /stocks/stock_data/AMZN/TIME_SERIES_MONTHLY</p>
-<br></br>
-<b>Search for stock symbol</b>
-<p>Request type: GET</p>
-<p>Path: /stocks/search/"stock_name"</p>
-<p>Example Path: /stocks/search/Microsoft</p>
 <br></br>
 <b>Add new stock</b>
 <p>Request type: POST</p>
