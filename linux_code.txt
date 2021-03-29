@@ -31,25 +31,25 @@ git clone https://github.com/guypwhunt/cloud_computing
 cd cloud_computing
 
 # Build the doker image
-sudo docker build -t guypwhunt1992/investment_app:v9 .
+sudo docker build -t guypwhunt1992/investment_app:v10 .
 	
 # Run the docker image
-sudo docker run -p 80:80 guypwhunt1992/investment_app:v9
+sudo docker run -p 80:80 guypwhunt1992/investment_app:v10
 
 # Find docker image id
 sudo docker images
 
 # Tag docker image correctly
-sudo docker tag ffcb4e6ebf5c guypwhunt1992/investment_app:v9
+sudo docker tag d4a94bdaf239 guypwhunt1992/investment_app:v10
 
 # Docker Login
 sudo docker login
 
 # Push image to registery
-sudo docker push guypwhunt1992/investment_app:v9
+sudo docker push guypwhunt1992/investment_app:v10
 
 # Start the container from image
-sudo docker container run -d -it --name investment guypwhunt1992/investment_app:v9
+sudo docker container run -d -it --name investment guypwhunt1992/investment_app:v10
 
 # Install Kubernetes
 sudo apt update -y
@@ -68,7 +68,7 @@ metadata:
 spec:
    containers:
    - name: investment-container01
-     image: guypwhunt1992/investment_app:v9
+     image: guypwhunt1992/investment_app:v10
      ports:
      - containerPort: 6379
 
@@ -79,15 +79,22 @@ spec:
 sudo microk8s kubectl get all
 
 # Create a deployment
-sudo microk8s kubectl create deployment investment --image=guypwhunt1992/investment_app:v9 --port=80
+sudo microk8s kubectl create deployment investment --image=guypwhunt1992/investment_app:v10 --port=80
 
 # Create a load balancer
 sudo microk8s kubectl expose deployment investment --type=LoadBalancer --port 80 --target-port 80
 
 # Scale the deployment
-sudo microk8s kubectl scale deployment investment --replicas=1
+sudo microk8s kubectl scale deployment investment --replicas=10
 
 # Delete statments if needed
 sudo microk8s kubectl delete deployment investment
 sudo microk8s kubectl delete service investment
 rm -r cloud_computing
+
+
+sudo microk8s kubectl get pods -l app=investment
+sudo microk8s kubectl get pods -l app=hostnames \
+    -o go-template='{{range .items}}{{.status.podIP}}{{"\n"}}{{end}}'
+	
+	sudo microk8s kubectl get svc
