@@ -6,13 +6,13 @@
 	},
 	"item": [
 		{
-			"name": "Add New Index",
+			"name": "Add new stock",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"pk_stock_id\": 3,\r\n\"stock_name\": \"Microsoft Corporation\",\r\n\"stock_symbol\": \"MSFT\"}",
+					"raw": "{\"pk_stock_id\": 3,\r\n\"stock_name\": \"International Business Machines Corp\",\r\n\"stock_symbol\": \"IBM\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,15 +20,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/add_stock",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks/add_stock",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172",
+					"port": "30339",
 					"path": [
 						"stocks",
 						"add_stock"
@@ -38,13 +38,13 @@
 			"response": []
 		},
 		{
-			"name": "Update Index",
+			"name": "Update stock",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pk_stock_id\": \"3\",\r\n    \"stock_name\": \"Microsoft\"\r\n}",
+					"raw": "{\r\n    \"pk_stock_id\": \"3\",\r\n    \"stock_name\": \"IBM\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,43 +52,43 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/update_stock/MSFT",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks/update_stock/IBM",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172",
+					"port": "30339",
 					"path": [
 						"stocks",
 						"update_stock",
-						"MSFT"
+						"IBM"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete Index",
+			"name": "Delete stock",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/delete_stock/MSFT",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks/delete_stock/IBM",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172",
+					"port": "30339",
 					"path": [
 						"stocks",
 						"delete_stock",
-						"MSFT"
+						"IBM"
 					]
 				}
 			},
@@ -100,34 +100,34 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172"
+					"port": "30339"
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get All Indexes",
+			"name": "Get all the stocks",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172",
+					"port": "30339",
 					"path": [
 						"stocks"
 					]
@@ -136,66 +136,71 @@
 			"response": []
 		},
 		{
-			"name": "Get Specific Index",
+			"name": "Get a specific stock",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/MCX",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks/A",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172",
+					"port": "30339",
 					"path": [
 						"stocks",
-						"MCX"
+						"A"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Search for Stock Symbol",
+			"name": "Search for stock symbol",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost/stocks/search/Microsoft",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks/search/IBM",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"ec2-54-173-33-136",
+						"compute-1",
+						"amazonaws",
+						"com"
 					],
+					"port": "30339",
 					"path": [
 						"stocks",
 						"search",
-						"Microsoft"
+						"IBM"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get Stock Information",
+			"name": "Get stock information",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://ec2-100-26-233-136.compute-1.amazonaws.com:30172/stocks/stock_data/AMZN/TIME_SERIES_MONTHLY",
+					"raw": "http://ec2-54-173-33-136.compute-1.amazonaws.com:30339/stocks/stock_data/IBM/TIME_SERIES_MONTHLY",
 					"protocol": "http",
 					"host": [
-						"ec2-100-26-233-136",
+						"ec2-54-173-33-136",
 						"compute-1",
 						"amazonaws",
 						"com"
 					],
-					"port": "30172",
+					"port": "30339",
 					"path": [
 						"stocks",
 						"stock_data",
-						"AMZN",
+						"IBM",
 						"TIME_SERIES_MONTHLY"
 					]
 				}
