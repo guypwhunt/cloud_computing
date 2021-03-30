@@ -14,7 +14,6 @@ Within the repository you will find several other files:
     myapp.py which contains the python code used to create the restful API.
     requirements.txt which contains all the required libraries for the myapp.py to run.
     sql_code.sql which contains the SQL commands to create the neccessary table.
-    stock_api_cache.sqlite which is the cache.
     testFunctions.ipynb which contains python code to performance test the API
 
 ## Contributing
