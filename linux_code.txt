@@ -40,7 +40,7 @@ sudo docker run -p 80:80 guypwhunt1992/investment_app:v10
 sudo docker images
 
 # Tag docker image correctly
-sudo docker tag d4a94bdaf239 guypwhunt1992/investment_app:v10
+sudo docker tag d12aa7af683d guypwhunt1992/investment_app:v10
 
 # Docker Login
 sudo docker login
@@ -85,7 +85,7 @@ sudo microk8s kubectl create deployment investment --image=guypwhunt1992/investm
 sudo microk8s kubectl expose deployment investment --type=LoadBalancer --port 80 --target-port 80
 
 # Scale the deployment
-sudo microk8s kubectl scale deployment investment --replicas=10
+sudo microk8s kubectl scale deployment investment --replicas=3
 
 # Delete statments if needed
 sudo microk8s kubectl delete deployment investment

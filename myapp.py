@@ -2,7 +2,6 @@
 from flask import Flask, jsonify, request, render_template
 import mysql.connector
 import requests
-import requests_cache
 import json
 import collections
 
