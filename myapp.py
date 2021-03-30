@@ -9,8 +9,6 @@ import collections
 #import jwt
 #import pandas as pd
 
-requests_cache.install_cache('stock_api_cache', backend='sqlite', expire_after=36000)
-
 app = Flask(__name__)
 
 # This allows for testing when the database is turned off
