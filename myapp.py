@@ -71,7 +71,7 @@ def api_information():
 }</p>
 <br></br>
 <b>Delete stock</b>
-<p>Request type: PUT</p>
+<p>Request type: DELETE</p>
 <p>Path: /stocks/delete_stock/"symbol"</p>
 <br></br>
 </body>
