@@ -6,7 +6,6 @@ The stock index restful api is used to obtain, store, update and delete informat
 Shabnam Manjuri, Rafayet Tarafder, Rohit Garg, Helen Louise Gaden and Guy Hunt
 
 ## File
-
 Within the repository you will find several other files:
     cloud_computing.postman_collection.json which contains a Postman collection of all the API calls.
     Dockerfile which is the Dockerfile for the project.
@@ -15,6 +14,9 @@ Within the repository you will find several other files:
     requirements.txt which contains all the required libraries for the myapp.py to run.
     sql_code.sql which contains the SQL commands to create the neccessary table.
     testFunctions.ipynb which contains python code to performance test the API
+
+## File
+Docker images can be found on this URL: https://hub.docker.com/r/guypwhunt1992/investment_app
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
