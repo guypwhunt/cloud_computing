@@ -22,7 +22,7 @@ Within the repository you will find several other files:
     
     testFunctions.ipynb which contains python code to performance test the API
 
-## File
+## Docker Hub
 Docker images can be found on this URL: https://hub.docker.com/r/guypwhunt1992/investment_app
 
 ## Contributing
